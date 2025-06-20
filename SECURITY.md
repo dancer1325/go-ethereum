@@ -2,11 +2,13 @@
 
 ## Supported Versions
 
-Please see [Releases](https://github.com/ethereum/go-ethereum/releases). We recommend using the [most recently released version](https://github.com/ethereum/go-ethereum/releases/latest).
+* [Releases](https://github.com/ethereum/go-ethereum/releases)
+* recommendations
+  * use the [MOST RECENT released version](https://github.com/ethereum/go-ethereum/releases/latest)
 
 ## Audit reports
 
-Audit reports are published in the `docs` folder: https://github.com/ethereum/go-ethereum/tree/master/docs/audits 
+* [here](docs/audits) 
 
 | Scope | Date | Report Link |
 | ------- | ------- | ----------- |
@@ -17,7 +19,7 @@ Audit reports are published in the `docs` folder: https://github.com/ethereum/go
 
 ## Reporting a Vulnerability
 
-**Please do not file a public ticket** mentioning the vulnerability.
+* TODO: **Please do not file a public ticket** mentioning the vulnerability.
 
 To find out how to disclose a vulnerability in Ethereum visit [https://bounty.ethereum.org](https://bounty.ethereum.org) or email bounty@ethereum.org. Please read the [disclosure page](https://github.com/ethereum/go-ethereum/security/advisories?state=published) for more information about publicly disclosed security vulnerabilities.
 
