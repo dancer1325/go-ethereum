@@ -1,6 +1,6 @@
 ## Go Ethereum
 
-* == Ethereum protocol's execution layer implementation
+* == 👀Ethereum protocol's execution layer implementation👀
   * Golang
 
 [![API Reference](
@@ -9,124 +9,115 @@ https://pkg.go.dev/badge/github.com/ethereum/go-ethereum
 
 [![Discord](https://img.shields.io/badge/discord-join%20chat-blue.svg)](https://discord.gg/nthXNEv)
 
-Automated builds are available for stable releases and the unstable master branch
-
-Binary
-archives are published at https://geth.ethereum.org/downloads/.
+* AUTOMATED builds
+  * uses
+    * stable releases
+    * unstable master branch
+* [Binary archives](https://geth.ethereum.org/downloads/)
 
 ## Building the source
 
-For prerequisites and detailed build instructions please read the [Installation Instructions](https://geth.ethereum.org/docs/getting-started/installing-geth).
+* [Installation Instructions](https://geth.ethereum.org/docs/getting-started/installing-geth)
 
-Building `geth` requires both a Go (version 1.23 or later) and a C compiler. You can install
-them using your favourite package manager. Once the dependencies are installed, run
+* requirements
+  * Go v1.23+
+  * C compiler
 
-```shell
-make geth
-```
-
-or, to build the full suite of utilities:
-
-```shell
-make all
-```
+* ways to build
+  * `make geth`
+  * `make all`
+    * build the FULL suite of utilities
 
 ## Executables
 
-The go-ethereum project comes with several wrappers/executables found in the `cmd`
-directory.
+* == SEVERAL wrappers/executables
+* | ["cmd"](cmd)
 
-|  Command   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| :--------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`geth`** | Our main Ethereum CLI client. It is the entry point into the Ethereum network (main-, test- or private net), capable of running as a full node (default), archive node (retaining all historical state) or a light node (retrieving data live). It can be used by other processes as a gateway into the Ethereum network via JSON RPC endpoints exposed on top of HTTP, WebSocket and/or IPC transports. `geth --help` and the [CLI page](https://geth.ethereum.org/docs/fundamentals/command-line-options) for command line options. |
-|   `clef`   | Stand-alone signing tool, which can be used as a backend signer for `geth`.                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|  `devp2p`  | Utilities to interact with nodes on the networking layer, without running a full blockchain.                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-|  `abigen`  | Source code generator to convert Ethereum contract definitions into easy-to-use, compile-time type-safe Go packages. It operates on plain [Ethereum contract ABIs](https://docs.soliditylang.org/en/develop/abi-spec.html) with expanded functionality if the contract bytecode is also available. However, it also accepts Solidity source files, making development much more streamlined. Please see our [Native DApps](https://geth.ethereum.org/docs/developers/dapp-developer/native-bindings) page for details.                                  |
-|   `evm`    | Developer utility version of the EVM (Ethereum Virtual Machine) that is capable of running bytecode snippets within a configurable environment and execution mode. Its purpose is to allow isolated, fine-grained debugging of EVM opcodes (e.g. `evm --code 60ff60ff --debug run`).                                                                                                                                                                                                                                               |
-| `rlpdump`  | Developer utility tool to convert binary RLP ([Recursive Length Prefix](https://ethereum.org/en/developers/docs/data-structures-and-encoding/rlp)) dumps (data encoding used by the Ethereum protocol both network as well as consensus wise) to user-friendlier hierarchical representation (e.g. `rlpdump --hex CE0183FFFFFFC4C304050583616263`).                                                                                                                                                                                |
+|  Command   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| :--------: |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **`geth`** | 💡MAIN Ethereum CLI client💡<br/> == entry point \| Ethereum network (main-, test- or private net) <br/> ways of running <br/> &nbsp;&nbsp; FULL node (default) <br/> &nbsp;&nbsp; archive node ( == retain ALL historical state) <br/> &nbsp;&nbsp; light node (== retrieve data LIVE) <br/> expose JSON RPC endpoints / AVAILABLE \| <br/> &nbsp;&nbsp; HTTP <br/> &nbsp;&nbsp; WebSocket <br/> &nbsp;&nbsp; IPC transports                                                                                     |
+|   `clef`   | == stand-alone signing tool <br/> uses <br/> &nbsp;&nbsp; backend signer -- for -- `geth`                                                                                                                                                                                                                                                                                                                                                                                                                         |
+|  `devp2p`  | == utilities -- to interact with -- nodes \| networking layer WITHOUT running a FULL blockchain                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|  `abigen`  | == source code generator / Ethereum contract definitions -- are converted into -- Go packages (easy-to-use, compile-time type-safe) <br/> operates \| <br/> &nbsp;&nbsp; plain [Ethereum contract ABIs](https://docs.soliditylang.org/en/develop/abi-spec.html) / <br/> &nbsp;&nbsp; &nbsp;&nbsp; if the contract bytecode is ALSO AVAILABLE -> expanded functionality <br/> &nbsp;&nbsp; solidity source files <br/> see [Native DApps](https://geth.ethereum.org/docs/developers/dapp-developer/native-bindings) |
+|   `evm`    | == EVM's developer utility version / <br/> &nbsp;&nbsp; run bytecode snippets \| configurable environment & execution mode <br/> &nbsp;&nbsp; enable <br/> &nbsp;&nbsp; &nbsp;&nbsp; debug EVM opcodes                                                                                                                                                                                                                                                                                                            |
+| `rlpdump`  | == developer utility tool / binary RLP ([Recursive Length Prefix](https://ethereum.org/en/developers/docs/data-structures-and-encoding/rlp)) dumps -- are converted into -- hierarchical representation                                                                                                                                             |
 
 ## Running `geth`
 
-Going through all the possible command line flags is out of scope here (please consult our
-[CLI Wiki page](https://geth.ethereum.org/docs/fundamentals/command-line-options)),
-but we've enumerated a few common parameter combos to get you up to speed quickly
-on how you can run your own `geth` instance.
-
 ### Hardware Requirements
 
-Minimum:
+* Minimum
+  * CPU with 4+ cores
+  * 8GB RAM
+  * 1TB free storage space to sync the Mainnet
+  * 8 MBit/sec download Internet service
 
-* CPU with 4+ cores
-* 8GB RAM
-* 1TB free storage space to sync the Mainnet
-* 8 MBit/sec download Internet service
+* recommendations
+  * Fast CPU with 8+ cores
+  * 16GB+ RAM
+  * High-performance SSD with at least 1TB of free space
+  * 25+ MBit/sec download Internet service
 
-Recommended:
+### FULL node | main Ethereum network
 
-* Fast CPU with 8+ cores
-* 16GB+ RAM
-* High-performance SSD with at least 1TB of free space
-* 25+ MBit/sec download Internet service
+* COMMON use case
+  * SIMPLY interact -- with the -- Ethereum network
+    * _Example:_ create accounts; transfer funds; deploy and interact with contracts
+    * == NOT care about years-old historical data
+    * == sync quickly -- to the -- network's CURRENT state
 
-### Full node on the main Ethereum network
+    ```shell
+    $ geth console
+    ```
+  * `geth`
+    * starts | 👀snap sync mode👀
+      * if you want to change -> pass `--syncmode` flag
+      * download MORE data 
+        * Reason: 🧠avoid processing the Ethereum network's WHOLE history🧠
 
-By far the most common scenario is people wanting to simply interact with the Ethereum
-network: create accounts; transfer funds; deploy and interact with contracts. For this
-particular use case, the user doesn't care about years-old historical data, so we can
-sync quickly to the current state of the network. To do so:
+* `geth ... console`
+  * start the built-in interactive [JS console](https://geth.ethereum.org/docs/interacting-with-geth/javascript-console) /
+    * allows you
+      * interact -- via -- [`web3` methods](https://github.com/ChainSafe/web3.js/blob/0.20.7/DOCUMENTATION.md)
+        * ❌NOT up to date -- with -- official docs❌
 
-```shell
-$ geth console
-```
+* `geth attach`
+  * allows
+    * | ALREADY running `geth` instance,
+      * attach JS console 
 
-This command will:
- * Start `geth` in snap sync mode (default, can be changed with the `--syncmode` flag),
-   causing it to download more data in exchange for avoiding processing the entire history
-   of the Ethereum network, which is very CPU intensive.
- * Start the built-in interactive [JavaScript console](https://geth.ethereum.org/docs/interacting-with-geth/javascript-console),
-   (via the trailing `console` subcommand) through which you can interact using [`web3` methods](https://github.com/ChainSafe/web3.js/blob/0.20.7/DOCUMENTATION.md) 
-   (note: the `web3` version bundled within `geth` is very old, and not up to date with official docs),
-   as well as `geth`'s own [management APIs](https://geth.ethereum.org/docs/interacting-with-geth/rpc).
-   This tool is optional and if you leave it out you can always attach it to an already running
-   `geth` instance with `geth attach`.
+### FULL node | Holesky test network
 
-### A Full node on the Holesky test network
-
-Transitioning towards developers, if you'd like to play around with creating Ethereum
-contracts, you almost certainly would like to do that without any real money involved until
-you get the hang of the entire system. In other words, instead of attaching to the main
-network, you want to join the **test** network with your node, which is fully equivalent to
-the main network, but with play-Ether only.
+* use case
+  * play around -- with -- creating Ethereum contracts
 
 ```shell
 $ geth --holesky console
 ```
 
-The `console` subcommand has the same meaning as above and is equally
-useful on the testnet too.
+* `console` subcommand
+  * 's meaning == testnet's meaning
 
-Specifying the `--holesky` flag, however, will reconfigure your `geth` instance a bit:
+* `--holesky` flag
+  * reconfigure your `geth` instance / 👀client will connect -- to the -- Holesky test network👀
+    * DIFFERENT P2P bootnodes, network IDs & genesis states
+  * nest itself 1 level deeper | `holesky/` subfolder
+    * _Example:_ | Linux,
+      * default data directory `~/.ethereum`
+      * holesky network `~/.ethereum/holesky`
+  * if you want to attach | running testnet node -> you need to use a custom endpoint 
+    * AFFECT | OSX & Linux
+    * Reason: 🧠`geth attach` will try to attach | production node endpoint, by default
+      * _Example:_ `geth attach <datadir>/holesky/geth.ipc`🧠
+    * NOT AFFECT | Windows
 
- * Instead of connecting to the main Ethereum network, the client will connect to the Holesky 
-   test network, which uses different P2P bootnodes, different network IDs and genesis
-   states.
- * Instead of using the default data directory (`~/.ethereum` on Linux for example), `geth`
-   will nest itself one level deeper into a `holesky` subfolder (`~/.ethereum/holesky` on
-   Linux). Note, on OSX and Linux this also means that attaching to a running testnet node
-   requires the use of a custom endpoint since `geth attach` will try to attach to a
-   production node endpoint by default, e.g.,
-   `geth attach <datadir>/holesky/geth.ipc`. Windows users are not affected by
-   this.
-
-*Note: Although some internal protective measures prevent transactions from
-crossing over between the main network and test network, you should always
-use separate accounts for play and real money. Unless you manually move
-accounts, `geth` will by default correctly separate the two networks and will not make any
-accounts available between them.*
+* recommendations
+  * use account | main network != account | Holesky
+    * ALTHOUGH EXIST INTERNAL protective measures / prevent transactions BETWEEN the main network -- & -- Holesky
 
 ### Configuration
 
-As an alternative to passing the numerous flags to the `geth` binary, you can also pass a
+* TODO: As an alternative to passing the numerous flags to the `geth` binary, you can also pass a
 configuration file via:
 
 ```shell
@@ -216,42 +207,19 @@ There are three different solutions depending on your use case:
 
 ## Contribution
 
-Thank you for considering helping out with the source code! We welcome contributions
-from anyone on the internet, and are grateful for even the smallest of fixes!
+ * official Go [formatting](https://golang.org/doc/effective_go.html#formatting) guidelines 
+   * == uses [gofmt](https://golang.org/cmd/gofmt/)
+ * Code 
+   * document it -- following -- the official Go [commentary](https://golang.org/doc/effective_go.html#commentary)
+ * commit messages
+   * prefix -- with the -- package(s) / they modify
+     * _Example:_ "eth, rpc: make trace configs optional"
 
-If you'd like to contribute to go-ethereum, please fork, fix, commit and send a pull request
-for the maintainers to review and merge into the main code base. If you wish to submit
-more complex changes though, please check up with the core devs first on [our Discord Server](https://discord.gg/invite/nthXNEv)
-to ensure those changes are in line with the general philosophy of the project and/or get
-some early feedback which can make both your efforts much lighter as well as our review
-and merge procedures quick and simple.
-
-Please make sure your contributions adhere to our coding guidelines:
-
- * Code must adhere to the official Go [formatting](https://golang.org/doc/effective_go.html#formatting)
-   guidelines (i.e. uses [gofmt](https://golang.org/cmd/gofmt/)).
- * Code must be documented adhering to the official Go [commentary](https://golang.org/doc/effective_go.html#commentary)
-   guidelines.
- * Pull requests need to be based on and opened against the `master` branch.
- * Commit messages should be prefixed with the package(s) they modify.
-   * E.g. "eth, rpc: make trace configs optional"
-
-Please see the [Developers' Guide](https://geth.ethereum.org/docs/developers/geth-developer/dev-guide)
+* TODO: Please see the [Developers' Guide](https://geth.ethereum.org/docs/developers/geth-developer/dev-guide)
 for more details on configuring your environment, managing project dependencies, and
 testing procedures.
 
-### Contributing to geth.ethereum.org
+### | geth.ethereum.org
 
-For contributions to the [go-ethereum website](https://geth.ethereum.org), please checkout and raise pull requests against the `website` branch.
-For more detailed instructions please see the `website` branch [README](https://github.com/ethereum/go-ethereum/tree/website#readme) or the 
-[contributing](https://geth.ethereum.org/docs/developers/geth-developer/contributing) page of the website.
-
-## License
-
-The go-ethereum library (i.e. all code outside of the `cmd` directory) is licensed under the
-[GNU Lesser General Public License v3.0](https://www.gnu.org/licenses/lgpl-3.0.en.html),
-also included in our repository in the `COPYING.LESSER` file.
-
-The go-ethereum binaries (i.e. all code inside of the `cmd` directory) are licensed under the
-[GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html), also
-included in our repository in the `COPYING` file.
+* 💡[`website` branch](https://github.com/ethereum/go-ethereum/tree/website#readme)💡
+  * == documentation
