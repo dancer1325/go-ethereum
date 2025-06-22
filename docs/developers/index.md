@@ -3,9 +3,9 @@ title: Developer docs
 description: Documentation for Geth developers and dapp developers
 ---
 
-Welcome to the Geth Developer docs!
-
-This section includes information for builders. If you are building decentralized apps on top of Geth, head to the [Dapp developers](#dapp-developers) docs. If you are developing Geth itself, explore the [Geth developers](#geth-developers) docs.
+* goal
+  * [build decentralized apps | Geth](#dapp-developers)
+  * [how to develop Geth?](#geth-developers) 
 
 ## Dapp developers {#dapp-developers}
 
