@@ -3,15 +3,16 @@ title: Command-line Options
 description: A list of commands for Geth
 ---
 
-Geth is primarily controlled using the command line. Geth is started using the `geth`
-command. It is stopped by pressing `ctrl-c`.
+* goal
+  * CL options (a.k.a. flags) / configure Geth
 
-You can configure Geth using command-line options (a.k.a. flags). Geth also has
-sub-commands, which can be used to invoke functionality such as the console or blockchain
-import/export.
-
-The command-line help listing is reproduced below for your convenience. The same
-information can be obtained at any time from your own Geth instance by running:
+* Geth
+  * PRIMARILY controlled -- via -- CL
+  * started -- via -- `geth`
+  * 's sub-commands
+    * uses
+      * invoke functionality
+        * _Example:_ console or blockchain import/export
 
 ```sh
 geth --help
