@@ -117,93 +117,108 @@ $ geth --holesky console
 
 ### Configuration
 
-* TODO: As an alternative to passing the numerous flags to the `geth` binary, you can also pass a
-configuration file via:
+* ways to configure 
+  * pass CL's flags
+  * pass a configuration file -- via -- `--config pathToConfigurationFile`
 
-```shell
-$ geth --config /path/to/your_config.toml
-```
+    ```shell
+    $ geth --config /path/to/your_config.toml
+    ```
 
-To get an idea of how the file should look like you can use the `dumpconfig` subcommand to
-export your existing configuration:
+    * if you want to know the configuration / EACH flag -> use `dumpconfig` subcommand
 
-```shell
-$ geth --your-favourite-flags dumpconfig
-```
+      ```shell
+      $ geth --your-favourite-flags dumpconfig
+      ```
 
-#### Docker quick start
+### -- via -- Docker
 
-One of the quickest ways to get Ethereum up and running on your machine is by using
-Docker:
+* get Ethereum up & running | your machine
 
-```shell
-docker run -d --name ethereum-node -v /Users/alice/ethereum:/root \
-           -p 8545:8545 -p 30303:30303 \
-           ethereum/client-go
-```
+  ```shell
+  # start `geth` / 
+  #  1. snap-sync mode
+  #  2. DB memory allowance == 1GB
+  #  3. create a persistent volume | your home directory / save your blockchain  
+  docker run -d --name ethereum-node -v /Users/alice/ethereum:/root \
+             -p 8545:8545 -p 30303:30303 \
+             ethereum/client-go
+  ```
 
-This will start `geth` in snap-sync mode with a DB memory allowance of 1GB, as the
-above command does.  It will also create a persistent volume in your home directory for
-saving your blockchain as well as map the default ports. There is also an `alpine` tag
-available for a slim version of the image.
-
-Do not forget `--http.addr 0.0.0.0`, if you want to access RPC from other containers
-and/or hosts. By default, `geth` binds to the local interface and RPC endpoints are not
-accessible from the outside.
+  * if you want to access RPC from OTHER containers OR hosts -> pass `--http.addr 0.0.0.0` 
+    * by default, 
+      * `geth` binds -- to the -- local interface
+      * RPC endpoints are NOT accessible -- from the -- outside
 
 ### Programmatically interfacing `geth` nodes
 
-As a developer, sooner rather than later you'll want to start interacting with `geth` and the
-Ethereum network via your own programs and not manually through the console. To aid
-this, `geth` has built-in support for a JSON-RPC based APIs ([standard APIs](https://ethereum.org/en/developers/docs/apis/json-rpc/)
-and [`geth` specific APIs](https://geth.ethereum.org/docs/interacting-with-geth/rpc)).
-These can be exposed via HTTP, WebSockets and IPC (UNIX sockets on UNIX based
-platforms, and named pipes on Windows).
+* goal
+  * interact with `geth` & Ethereum network -- via -- your OWN programs
+    * == ❌NOT MANUALLY -- through the -- console❌
 
-The IPC interface is enabled by default and exposes all the APIs supported by `geth`,
-whereas the HTTP and WS interfaces need to manually be enabled and only expose a
-subset of APIs due to security reasons. These can be turned on/off and configured as
-you'd expect.
+* `geth`
+  * 👀built-in support -- for a -- APIs 
+    * JSON-RPC based APIs ([standard APIs](https://ethereum.org/en/developers/docs/apis/json-rpc/)
+    * [`geth` specific APIs](https://geth.ethereum.org/docs/interacting-with-geth/rpc)👀
+  * ways to expose these APIs
+    * HTTP,
+      * by default, disabled
+        * == you need to MANUALLY, enable it
+      * ONLY expose a subset of APIs -- due to -- security reasons
+    * WebSockets
+      * by default, disabled
+        * == you need to MANUALLY, enable it
+      * ONLY expose a subset of APIs -- due to -- security reasons
+    * IPC (UNIX sockets | UNIX based platforms, & named pipes | Windows)
+      * by default, enabled
+      * exposes ALL the APIs / supported by `geth`
 
-HTTP based JSON-RPC API options:
+* HTTP based JSON-RPC API options
+  * `--http`
+    * enable the HTTP-RPC server
+  * `--http.addr`
+    * HTTP-RPC server listening interface
+    * by default, `localhost`
+  * `--http.port`
+    * HTTP-RPC server listening port
+    * by default, `8545`
+  * `--http.api`
+    * API's offered -- over the -- HTTP-RPC interface
+    * by default, `eth,net,web3`
+  * `--http.corsdomain`
+    * == `domain1,domain2, ...`
+    * domains / from which -- to -- accept cross-origin requests
+  * `--ws`
+    * enable the WS-RPC server
+  * `--ws.addr`
+    * WS-RPC server listening interface
+    * by default, `localhost`
+  * `--ws.port`
+    * WS-RPC server listening port
+    * by default, `8546`
+  * `--ws.api`
+    * API's offered over the WS-RPC interface
+    * by default, `eth,net,web3`
+  * `--ws.origins`
+    * origins | accept WebSocket requests
+  * `--ipcdisable`
+    * disable the IPC-RPC server
+  * `--ipcpath`
+    * datadir's filename for IPC socket/pipe
 
-  * `--http` Enable the HTTP-RPC server
-  * `--http.addr` HTTP-RPC server listening interface (default: `localhost`)
-  * `--http.port` HTTP-RPC server listening port (default: `8545`)
-  * `--http.api` API's offered over the HTTP-RPC interface (default: `eth,net,web3`)
-  * `--http.corsdomain` Comma separated list of domains from which to accept cross-origin requests (browser enforced)
-  * `--ws` Enable the WS-RPC server
-  * `--ws.addr` WS-RPC server listening interface (default: `localhost`)
-  * `--ws.port` WS-RPC server listening port (default: `8546`)
-  * `--ws.api` API's offered over the WS-RPC interface (default: `eth,net,web3`)
-  * `--ws.origins` Origins from which to accept WebSocket requests
-  * `--ipcdisable` Disable the IPC-RPC server
-  * `--ipcpath` Filename for IPC socket/pipe within the datadir (explicit paths escape it)
-
-You'll need to use your own programming environments' capabilities (libraries, tools, etc) to
-connect via HTTP, WS or IPC to a `geth` node configured with the above flags and you'll
-need to speak [JSON-RPC](https://www.jsonrpc.org/specification) on all transports. You
-can reuse the same connection for multiple requests!
-
-**Note: Please understand the security implications of opening up an HTTP/WS based
-transport before doing so! Hackers on the internet are actively trying to subvert
-Ethereum nodes with exposed APIs! Further, all browser tabs can access locally
-running web servers, so malicious web pages could try to subvert locally available
-APIs!**
+* SAME connection
+  * can be reused -- for -- MULTIPLE requests
 
 ### Operating a private network
 
-Maintaining your own private network is more involved as a lot of configurations taken for
-granted in the official networks need to be manually set up.
+* | since [the Merge](https://ethereum.org/en/roadmap/merge/),
+  * set up a network of geth nodes + corresponding beacon chain
 
-Unfortunately since [the Merge](https://ethereum.org/en/roadmap/merge/) it is no longer possible
-to easily set up a network of geth nodes without also setting up a corresponding beacon chain.
-
-There are three different solutions depending on your use case:
-
-  * If you are looking for a simple way to test smart contracts from go in your CI, you can use the [Simulated Backend](https://geth.ethereum.org/docs/developers/dapp-developer/native-bindings#blockchain-simulator).
-  * If you want a convenient single node environment for testing, you can use our [Dev Mode](https://geth.ethereum.org/docs/developers/dapp-developer/dev-mode).
-  * If you are looking for a multiple node test network, you can set one up quite easily with [Kurtosis](https://geth.ethereum.org/docs/fundamentals/kurtosis).
+* SOLUTIONS -- depending on -- your use case
+  * if you are looking for
+    * 1 way to test smart contracts | your CI -> use the [Simulated Backend](https://geth.ethereum.org/docs/developers/dapp-developer/native-bindings#blockchain-simulator)
+    * multiple node test network -> set one up -- with -- [Kurtosis](https://geth.ethereum.org/docs/fundamentals/kurtosis) 
+  * if you want a convenient 1 node environment for testing -> use [Dev Mode](https://geth.ethereum.org/docs/developers/dapp-developer/dev-mode)
 
 ## Contribution
 
