@@ -58,7 +58,8 @@ https://pkg.go.dev/badge/github.com/ethereum/go-ethereum
   * High-performance SSD with at least 1TB of free space
   * 25+ MBit/sec download Internet service
 
-### FULL node | main Ethereum network
+### ways to run
+#### FULL node | main Ethereum network
 
 * COMMON use case
   * SIMPLY interact -- with the -- Ethereum network
@@ -86,7 +87,7 @@ https://pkg.go.dev/badge/github.com/ethereum/go-ethereum
     * | ALREADY running `geth` instance,
       * attach JS console 
 
-### FULL node | Holesky test network
+#### FULL node | Holesky test network
 
 * use case
   * play around -- with -- creating Ethereum contracts
@@ -115,6 +116,25 @@ $ geth --holesky console
   * use account | main network != account | Holesky
     * ALTHOUGH EXIST INTERNAL protective measures / prevent transactions BETWEEN the main network -- & -- Holesky
 
+#### -- via -- Docker
+
+* get Ethereum up & running | your machine
+
+  ```shell
+  # start `geth` / 
+  #  1. snap-sync mode
+  #  2. DB memory allowance == 1GB
+  #  3. create a persistent volume | your home directory / save your blockchain  
+  docker run -d --name ethereum-node -v /Users/alice/ethereum:/root \
+             -p 8545:8545 -p 30303:30303 \
+             ethereum/client-go
+  ```
+
+  * if you want to access RPC from OTHER containers OR hosts -> pass `--http.addr 0.0.0.0`
+    * by default,
+      * `geth` binds -- to the -- local interface
+      * RPC endpoints are NOT accessible -- from the -- outside
+
 ### Configuration
 
 * ways to configure 
@@ -131,26 +151,7 @@ $ geth --holesky console
       $ geth --your-favourite-flags dumpconfig
       ```
 
-### -- via -- Docker
-
-* get Ethereum up & running | your machine
-
-  ```shell
-  # start `geth` / 
-  #  1. snap-sync mode
-  #  2. DB memory allowance == 1GB
-  #  3. create a persistent volume | your home directory / save your blockchain  
-  docker run -d --name ethereum-node -v /Users/alice/ethereum:/root \
-             -p 8545:8545 -p 30303:30303 \
-             ethereum/client-go
-  ```
-
-  * if you want to access RPC from OTHER containers OR hosts -> pass `--http.addr 0.0.0.0` 
-    * by default, 
-      * `geth` binds -- to the -- local interface
-      * RPC endpoints are NOT accessible -- from the -- outside
-
-### Programmatically interfacing `geth` nodes
+## how to programmatically interface -- with -- `geth` nodes?
 
 * goal
   * interact with `geth` & Ethereum network -- via -- your OWN programs
@@ -209,7 +210,7 @@ $ geth --holesky console
 * SAME connection
   * can be reused -- for -- MULTIPLE requests
 
-### Operating a private network
+## how to operate a private network?
 
 * | since [the Merge](https://ethereum.org/en/roadmap/merge/),
   * set up a network of geth nodes + corresponding beacon chain
