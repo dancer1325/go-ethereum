@@ -3,9 +3,20 @@ title: Beacon light client
 description: Running geth with integrated beacon light client
 ---
 
-`blsync` is a beacon chain light client. Integrated within Geth, blsync eliminates the necessity of running a separate [consensus client](/docs/getting-started/consensus-clients), making it ideal for use-cases that do not require full validation capabilities. It comes with very low resource requirements and can sync the beacon chain within seconds. `blsync` can be run in two modes: integrated or standalone. In standalone mode it is possible to use it for driving other execution clients.
+* `blsync`
+  * == beacon chain light client /
+    * modes
+      * integrated | Geth
+      * standalone
+    * 💡eliminates the need of running a SEPARATE [consensus client](/docs/getting-started/consensus-clients)💡
+      * -> use cases / NOT require FULL validation capabilities
 
-<note>Important: blsync is not suitable for running a validator. It is also not recommended for nodes handling any amount of money or used in production settings due to its lower security guarantees compared to running a full consensus client.</note>
+* TODO: It comes with very low resource requirements and can sync the beacon chain within seconds
+* `blsync` can be run in two modes: integrated or standalone
+* In standalone mode it is possible to use it for driving other execution clients.
+
+<note>Important: blsync is not suitable for running a validator
+* It is also not recommended for nodes handling any amount of money or used in production settings due to its lower security guarantees compared to running a full consensus client.</note>
 
 ## Usage
 
@@ -13,13 +24,16 @@ description: Running geth with integrated beacon light client
 
 To run blsync as part of Geth, you need to specify a public HTTP endpoint and a checkpoint:
 
-- **Choose an Endpoint**: Select a reliable and available endpoint from the [Light Sync Endpoints](https://s1na.github.io/light-sync-endpoints/) list. These nodes are community-maintained.
+- **Choose an Endpoint**: Select a reliable and available endpoint from the [Light Sync Endpoints](https://s1na.github.io/light-sync-endpoints/) list
+* These nodes are community-maintained.
 
-- **Specify the Checkpoint**: Obtain a weak subjectivity checkpoint from a trusted node operator. The checkpoint should be less than 2 weeks old.
+- **Specify the Checkpoint**: Obtain a weak subjectivity checkpoint from a trusted node operator
+* The checkpoint should be less than 2 weeks old.
 
 #### Checkpoint
 
-A checkpoint is the block root of the first proposed slot of a finalized beacon epoch. In this guide we use [beaconcha.in](https://sepolia.beaconcha.in) to find a checkpoint:
+A checkpoint is the block root of the first proposed slot of a finalized beacon epoch
+* In this guide we use [beaconcha.in](https://sepolia.beaconcha.in) to find a checkpoint:
 
 - Visit sepolia.beaconcha.in.
 - Navigate to the latest finalized epoch that is ideally 1 hour old.

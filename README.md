@@ -4,11 +4,12 @@
 
 ## Contributing
 
-* TODO: Issues can be raised in the main `go-ethereum` repository using the prefix `[website]: ` in the title.
+* issues
+  * [go-ethereum repository / title's prefix `[website]: `](https://github.com/ethereum/go-ethereum/issues?q=is%3Aissue%20state%3Aopen%20%5Bwebsite%5D) 
 
 ### The geth.ethereum.org stack
 
-geth.ethereum.org is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app)
+* TODO: geth.ethereum.org is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app)
 * The following tools were used to build the site:
 
 - [Node.js](https://nodejs.org/)
@@ -30,20 +31,18 @@ To learn more about the stack, take a look at the following resources:
 
 ### Repository structure
 
-The website code is organized with a top-level `docs` folder that contains all the documentation pages as markdown files
-* Inside `docs` are subdirectories used to divide the docs by theme (e.g. `getting-started`, `fundamentals`, `developers` etc)
-* Website code is in `src`, and assets including images are in `public`.
+* [content](docs)
+* [Website code](src)
 
 ### Adding a new documentation page
 
-Documentation pages are located in the `/docs` folder in the root directory of the project
-* The docs pages are all markdown files
-* When you want to add a new page, add the new file in the appropriate folder in the `/docs` page
-* `index.md` files will be the default page for a directory, and `{pagename}.md` will define subpages for a directory.
-
-After adding a page, you will also need to list it in `/src/data/documentation-links.yaml`
-* **This file defines the documentation structure which you will see on the left sidebar in the documentation pages**
-* Take into account that if you update the `/docs` structure or remove a doc, you should also update this file to avoid navigation issues.
+* steps
+  * | [docs](docs), 
+    * add the NEW .md
+  * | ["index.md"](docs/index.md)
+    * if the NEW file is a NEW subsection
+  * | ["documentation-links.yaml"](src/data/documentation-links.yaml)
+    * define the left sidebar
 
 #### Adding notes to a doc
 

@@ -5,11 +5,34 @@ description: Introduction to the external signing tool, Clef
 
 ## What is Clef? {#what-is-clef}
 
-Clef is a tool for **signing transactions and data** in a secure local environment. It is intended to become a more composable and secure replacement for Geth's built-in account management. Clef decouples key management from Geth itself, meaning it can be used as an independent, standalone key management and signing application, or it can be integrated into Geth. This provides a more flexible modular tool compared to Geth's account manager. Clef can be used safely in situations where access to Ethereum is via a remote and/or untrusted node because signing happens locally, either manually or automatically using custom rulesets. The separation of Clef from the node itself enables it to run as a daemon on the same machine as the client software, on a secure usb-stick like [USB armory](https://inversepath.com/usbarmory), or even a separate VM in a [QubesOS](https://www.qubes-os.org/) type setup.
+* Clef
+  * == tool /
+    * sign transactions & data | 💡secure local environment💡
+      * types
+        * MANUALLY or
+        * AUTOMATICALLY -- via -- custom rulesets
+      * local
+        * -> Clef is separated -- from the -- node itself
+          * -> you can run as a 
+            * daemon | machine / == client software's machine OR
+            * secure usb-stick 
+              * _Example:_ [USB armory](https://inversepath.com/usbarmory)
+            * separate VM
+              * _Example:_ [QubesOS](https://www.qubes-os.org/) type setup
+  * -- replacement of -- Geth's built-in account management /
+    * MORE composable
+    * MORE secure 
+  * decouples key management -- from -- Geth itself
+    * uses
+      * independent & standalone
+      * integrated | Geth
+  * use cases
+    * ALTERNATIVE to: access to Ethereum -- via a -- remote and/or untrusted node
+  * developed & maintained -- by the -- Geth team
 
 ## Installing and starting Clef {#installing-and-starting-clef}
 
-Clef comes bundled with Geth and can be built along with Geth and the other bundled tools using:
+* TODO: Clef comes bundled with Geth and can be built along with Geth and the other bundled tools using:
 
 `make all`
 
@@ -17,7 +40,9 @@ However, Clef is not bound to Geth and can be built on its own using:
 
 `make clef`
 
-Once built, Clef must be initialized. This includes storing some data, some of which is sensitive (such as passwords, account data, signing rules etc). Initializing Clef takes that data and encrypts it using a user-defined password.
+Once built, Clef must be initialized
+* This includes storing some data, some of which is sensitive (such as passwords, account data, signing rules etc)
+* Initializing Clef takes that data and encrypts it using a user-defined password.
 
 `clef init`
 

@@ -3,7 +3,10 @@ title: Databases
 description: Overview of Geth's database architecture
 ---
 
-Since v1.9.0, Geth has divided its database into two parts. Recent blocks and state data are kept in quick-access storage, but older blocks and receipts ("ancients") are stored in a "freezer" database. The point of this separation is to minimize the dependency on expensive, sensitive SSDs, and instead push the less frequently-accessed data into a database that can be supported by cheaper and more durable drives. Storing less data in the faster LevelDB database also enables faster compactions and improves the database performance by allowing more state trie nodes to be held in active memory for a given cache-size.
+Since v1.9.0, Geth has divided its database into two parts
+* Recent blocks and state data are kept in quick-access storage, but older blocks and receipts ("ancients") are stored in a "freezer" database
+* The point of this separation is to minimize the dependency on expensive, sensitive SSDs, and instead push the less frequently-accessed data into a database that can be supported by cheaper and more durable drives
+* Storing less data in the faster LevelDB database also enables faster compactions and improves the database performance by allowing more state trie nodes to be held in active memory for a given cache-size.
 
 ## Recent blocks
 
