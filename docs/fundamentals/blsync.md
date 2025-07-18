@@ -24,31 +24,45 @@ description: Running geth with integrated beacon light client
 
 To run blsync as part of Geth, you need to specify a public HTTP endpoint and a checkpoint:
 
-- **Choose an Endpoint**: Select a reliable and available endpoint from the [Light Sync Endpoints](https://s1na.github.io/light-sync-endpoints/) list
-* These nodes are community-maintained.
+- **Choose an Endpoint**: Select a reliable and available endpoint from the [Light Sync Endpoints](https://s1na.github.io/light-sync-endpoints/) list. These nodes are community-maintained.
+- **Specify the Checkpoint**: Obtain a weak subjectivity checkpoint from a trusted node operator. The checkpoint should be less than 2 weeks old. Some light sync providers only support checkpoints from the last ~1 hour.
 
-- **Specify the Checkpoint**: Obtain a weak subjectivity checkpoint from a trusted node operator
-* The checkpoint should be less than 2 weeks old.
+```terminal
+geth --beacon.api=<endpoint> --beacon.checkpoint=<checkpoint>
+```
 
 #### Checkpoint
 
-A checkpoint is the block root of the first proposed slot of a finalized beacon epoch
-* In this guide we use [beaconcha.in](https://sepolia.beaconcha.in) to find a checkpoint:
+A checkpoint is the block root of the first proposed slot of a finalized beacon epoch. It can be found manually or automatically depending on your trust requirements.
 
-- Visit sepolia.beaconcha.in.
+##### Retrieve checkpoint automatically
+
+Retrieving the checkpoint and starting Geth at the same time is done using proceedure below.
+
+Replace `<endpoint>` with the chosen *trusted* light sync provider from the list of [endpoints](https://s1na.github.io/light-sync-endpoints/). The following command will run Geth with the integrated blsync. Ensure [`jq`](https://jqlang.org/download/) is installed.
+
+```terminal
+BEACON=<endpoint> geth --beacon.api=$BEACON --beacon.checkpoint=$(curl -s $BEACON/eth/v1/beacon/headers/finalized | jq -r ".data.root")
+```
+
+##### Manually find a checkpoint
+
+A checkpoint can also be obtained manually. The easiest is to use [beaconcha.in](https://beaconcha.in) and cross check it with another provider like [beaconscan](https://beaconscan.com):
+
+- Visit [beaconcha.in](https://beaconcha.in).
 - Navigate to the latest finalized epoch that is ideally 1 hour old.
 ![Finding a suitable epoch](/images/docs/blsync1.png)
 - Open the epoch details and find the first proposed slot at the end of the page.
 ![Finding the first slot](/images/docs/blsync2.png)
+- Compare the block root for the slot against an another source. Verify they are equal.
 - Copy the block root field.
 ![Copy the block root](/images/docs/blsync3.png)
+- Fill in the argument for the `--beacon.checkpoint` flag with block root.
 
-#### Example
-
-The following command can be used to start Geth with blsync on the Sepolia network. Note that the checkpoint root will be outdated two weeks after the writing of this page and a recent one will have to be picked according to the guide above:
+###### Example
 
 ```terminal
-./build/bin/geth --sepolia --beacon.api https://sepolia.lightclient.xyz --beacon.checkpoint 0x0014732c89a02315d2ada0ed2f63b32ecb8d08751c01bea39011b31ad9ecee36
+geth --beacon.api=<endpoint> --beacon.checkpoint=<block root>
 ```
 
 ### Running `blsync` as a Standalone Tool
@@ -67,16 +81,16 @@ go build ./cmd/blsync
 
 Blsync takes the same flags as above to configure the HTTP endpoint as well as checkpoint. It additionally needs flags to connect to the execution client. Specifically `--blsync.engine.api` to configure the Engine API url and `--blsync.jwtsecret` for the JWT authentication token.
 
-Again to sync the Sepolia network in this mode, first run Geth:
+To sync the Sepolia network in this mode, first run Geth:
 
 ```terminal
-./build/bin/geth --sepolia --datadir light-sepolia-dir
+geth --sepolia --datadir light-sepolia-dir
 ```
 
 The logs will indicate the Engine API path which is by default `http://localhost:8551` and the path to the JWT secret created which is in this instance `./light-sepolia-dir/geth/jwtsecret`. Now blsync can be run:
 
 ```terminal
-./blsync --sepolia --beacon.api https://sepolia.lightclient.xyz --beacon.checkpoint 0x0014732c89a02315d2ada0ed2f63b32ecb8d08751c01bea39011b31ad9ecee36 --blsync.engine.api http://localhost:8551 --blsync.jwtsecret light-sepolia-dir/geth/jwtsecret
+blsync --sepolia --beacon.api https://sepolia.lightclient.xyz --beacon.checkpoint 0x0014732c89a02315d2ada0ed2f63b32ecb8d08751c01bea39011b31ad9ecee36 --blsync.engine.api http://localhost:8551 --blsync.jwtsecret light-sepolia-dir/geth/jwtsecret
 
 INFO [06-23|15:06:33.388] Loaded JWT secret file                   path=light-sepolia-dir/geth/jwtsecret crc32=0x5a92678
 INFO [06-23|15:06:34.130] Successful NewPayload                    number=6,169,314 hash=d4204e..772e65 status=SYNCING
