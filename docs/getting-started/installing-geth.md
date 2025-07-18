@@ -3,46 +3,49 @@ title: Installing Geth
 description: Guide to installing Geth
 ---
 
-There are several ways to install Geth, including via a package manager, downloading a pre-built bundle, running as a docker container or building from downloaded source code. On this page the various installation options are explained for several major operating systems. Users prioritizing ease of installation should choose to use a package manager or prebuilt bundle. Users prioritizing customization should build from source. It is important to run the latest version of Geth because each release includes bugfixes and improvements over the previous versions. The stable releases are recommended for most users because they have been fully tested. A list of stable releases can be found [here](https://github.com/ethereum/go-ethereum/releases). Instructions for updating existing Geth installations are also provided in each section.
+* ways to install Geth
+  * [package manager](#package-managers-package-managers)
+    * fast installation
+  * [download a pre-built bundle](#build-from-source-code-build-from-source)
+    * fast installation
+  * [run -- as a -- docker container](#docker-container-docker-container)
+    * 
+  * [build -- from -- downloaded source code](#build-from-source-code-build-from-source)
+    * enable customization
 
 ## Package managers {#package-managers}
 
 ### MacOS via Homebrew {#macos-via-homebrew}
 
-The easiest way to install go-ethereum is to use the Geth Homebrew tap. The first step is to check that Homebrew is installed. The following command should return a version number.
 
-```sh
-brew -v
-```
+* install the latest stable geth release + OTHER developer tools (`clef` + `devp2p` + `abigen` + `bootnode` + `evm` + `rlpdump`)
 
-If a version number is returned, then Homebrew is installed. If not, Homebrew can be installed by following the instructions [here](https://brew.sh/). With Homebrew installed, the following commands add the Geth tap and install Geth:
+    ```sh
+    brew tap ethereum/ethereum
+    brew install ethereum
+    ```
+  * EACH tools' binaries are saved | "/usr/local/bin/"
 
-```sh
-brew tap ethereum/ethereum
-brew install ethereum
-```
+* install the Geth repository's master branch
+  * == most up-to-date version
 
-The previous command installs the latest stable release. Developers that wish to install the most up-to-date version can install the Geth repository's master branch by adding the `--devel` parameter to the install command:
+    ```sh
+    brew install ethereum --devel
+    ```
 
-```sh
-brew install ethereum --devel
-```
+* update an existing Geth installation -- to the -- latest version
+  * stop the node
+  * run
 
-These commands install the core Geth software and the following developer tools: `clef`, `devp2p`, `abigen`, `bootnode`, `evm`, and `rlpdump`. The binaries for each of these tools are saved in `/usr/local/bin/`. The full list of command line options can be viewed [here](/docs/fundamentals/Command-Line-Options) or in the terminal by running `geth --help`.
-
-Updating an existing Geth installation to the latest version can be achieved by stopping the node and running the following commands:
-
-```sh
-brew update
-brew upgrade
-brew reinstall ethereum
-```
-
-When the node is started again, Geth will automatically use all the data from the previous version and sync the blocks that were missed while the node was offline.
+    ```sh
+    brew update
+    brew upgrade
+    brew reinstall ethereum
+    ```
 
 ### Ubuntu via PPAs {#ubuntu-via-ppas}
 
-The easiest way to install Geth on Ubuntu-based distributions is with the built-in launchpad PPAs (Personal Package Archives). A single PPA repository is provided, containing stable and development releases for Ubuntu versions `xenial`, `trusty`, `impish`, `focal`, `bionic`.
+* TODO: The easiest way to install Geth on Ubuntu-based distributions is with the built-in launchpad PPAs (Personal Package Archives). A single PPA repository is provided, containing stable and development releases for Ubuntu versions `xenial`, `trusty`, `impish`, `focal`, `bionic`.
 
 The following command enables the launchpad repository:
 

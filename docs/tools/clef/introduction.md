@@ -19,10 +19,11 @@ description: Introduction to the external signing tool, Clef
               * _Example:_ [USB armory](https://inversepath.com/usbarmory)
             * separate VM
               * _Example:_ [QubesOS](https://www.qubes-os.org/) type setup
+    * send the signed packet -- to an -- arbitrary Ethereum entry-point
   * -- replacement of -- Geth's built-in account management /
     * MORE composable
     * MORE secure 
-  * decouples key management -- from -- Geth itself
+  * decouples key management -- from -- Geth itself (== client software)
     * uses
       * independent & standalone
       * integrated | Geth
@@ -32,68 +33,46 @@ description: Introduction to the external signing tool, Clef
 
 ## Installing and starting Clef {#installing-and-starting-clef}
 
-* TODO: Clef comes bundled with Geth and can be built along with Geth and the other bundled tools using:
-
-`make all`
-
-However, Clef is not bound to Geth and can be built on its own using:
-
-`make clef`
-
-Once built, Clef must be initialized
-* This includes storing some data, some of which is sensitive (such as passwords, account data, signing rules etc)
-* Initializing Clef takes that data and encrypts it using a user-defined password.
-
-`clef init`
-
-```terminal
-WARNING!
-
-Clef is an account management tool. It may, like any software, contain bugs.
-
-Please take care to
-- backup your keystore files,
-- verify that the keystore(s) can be opened with your password.
-
-Clef is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY
-without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-PURPOSE. See the GNU General Public License for more details.
-
-Enter 'ok' to proceed:
-> ok
-
-The master seed of clef will be locked with a password.
-Please specify a password. Do not forget this password!
-Password:
-Repeat password:
-
-A master seed has been generated into /home/martin/.clef/masterseed.json
-
-This is required to be able to store credentials, such as:
-* Passwords for keystores (used by rule engine)
-* Storage for JavaScript auto-signing rules
-* Hash of JavaScript rule-file
-
-You should treat 'masterseed.json' with utmost secrecy and make a backup of it!
-* The password is necessary but not enough, you need to back up the master seed too!
-* The master seed does not contain your accounts, those need to be backed up separately!
-```
+* Clef
+  * 💡bundled -- with -- Geth💡
+  * if you want to
+    * build
+      * Clef + OTHER bundled tools (_Example:_ Geth)
+        ```
+        make all
+        ```
+      * Clef
+        ```
+        make clef
+        ```
+    * initialize it
+      * == store some data (sensitive _Example:_ passwords, account data) + encrypt it
+      * `clef init`
 
 ## Security model {#security-model}
 
-One of the major benefits of Clef is that it is decoupled from the client software, meaning it can be used by users and dapps to sign data and transactions in a secure, local environment and send the signed packet to an arbitrary Ethereum entry-point, which might include, for example, an untrusted remote node. Alternatively, Clef can simply be used as a standalone, composable signer that can be a backend component for decentralized applications. This requires a secure architecture that separates cryptographic operations from user interactions and internal/external communication.
+* Alternatively, Clef can simply be used as a standalone, composable signer that can be a backend component for decentralized applications
+* This requires a secure architecture that separates cryptographic operations from user interactions and internal/external communication.
 
 The security model of Clef is as follows:
 
 - A self-contained binary controls all cryptographic operations including encryption, decryption and storage of keystore files, and signing data and transactions.
 
-- A well defined, deliberately minimal "external" API is used to communicate with the Clef binary - Clef considers this external traffic to be UNTRUSTED. This means Clef does not accept any credentials and does not recognize authority of requests received over this channel. Clef listens on `http.addr:http.port` or `ipcpath` - the same as Geth - and expects messages to be formatted using the [JSON-RPC 2.0 standard](https://www.jsonrpc.org/specification). Some of the external API calls require some user interaction (manual approve/deny)- if it is not received responses can be delayed indefinitely.
+- A well defined, deliberately minimal "external" API is used to communicate with the Clef binary - Clef considers this external traffic to be UNTRUSTED
+* This means Clef does not accept any credentials and does not recognize authority of requests received over this channel
+* Clef listens on `http.addr:http.port` or `ipcpath` - the same as Geth - and expects messages to be formatted using the [JSON-RPC 2.0 standard](https://www.jsonrpc.org/specification)
+* Some of the external API calls require some user interaction (manual approve/deny)- if it is not received responses can be delayed indefinitely.
 
-- Clef communicates with the process that invoked the binary using stin/stout. The process invoking the binary is usually the native console-based user interface (UI) but there is also an API that enables communication with an external UI. This has to be enabled using `--stdio-ui` at startup. This channel is considered TRUSTED and is used to pass approvals and passwords between the user and Clef.
+- Clef communicates with the process that invoked the binary using stin/stout
+* The process invoking the binary is usually the native console-based user interface (UI) but there is also an API that enables communication with an external UI
+* This has to be enabled using `--stdio-ui` at startup
+* This channel is considered TRUSTED and is used to pass approvals and passwords between the user and Clef.
 
-- Clef does not store keys - the user is responsible for securely storing and backing up keyfiles. Clef does store account passwords in its encrypted vault if they are explicitly provided to Clef by the user to enable automatic account unlocking.
+- Clef does not store keys - the user is responsible for securely storing and backing up keyfiles
+* Clef does store account passwords in its encrypted vault if they are explicitly provided to Clef by the user to enable automatic account unlocking.
 
-The external API never handles any sensitive data directly, but it can be used to request Clef to sign some data or a transaction. It is the internal API that controls signing and triggers requests for manual approval (automatic approves actions that conform to attested rulesets) and passwords.
+The external API never handles any sensitive data directly, but it can be used to request Clef to sign some data or a transaction
+* It is the internal API that controls signing and triggers requests for manual approval (automatic approves actions that conform to attested rulesets) and passwords.
 
 The general flow for a basic transaction-signing operation using Clef and an Ethereum node such as Geth is as follows:
 
