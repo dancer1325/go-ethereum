@@ -1,76 +1,61 @@
 # Clef
 
-Clef can be used to sign transactions and data and is meant as a(n eventual) replacement for Geth's account management. This allows DApps to not depend on Geth's account management. When a DApp wants to sign data (or a transaction), it can send the content to Clef, which will then provide the user with context and ask for permission to sign the content. If the user grants the signing request, Clef will send the signature back to the DApp.
+* uses
+  * sign transactions & data /
+    * asking for permissions
+    * if the user grants the signing request -> Clef will send the signature -- back to the -- DApp
+  * == (n eventual) replacement -- for -- Geth's account management
+  * DApp / connected -- to an -- untrusted remote Ethereum node
+    * Reason:🧠 local Ethereum node 
+      * is NOT
+        * available
+        * synchronized -- with the -- chain
+      * has NOT built-in (or limited) account management🧠
 
-This setup allows a DApp to connect to a remote Ethereum node and send transactions that are locally signed. This can help in situations when a DApp is connected to an untrusted remote Ethereum node, because a local one is not available, not synchronized with the chain, or is a node that has no built-in (or limited) account management.
+* allows
+  * DApps 
+    * ❌do NOT depend -- on -- Geth's account management❌
+    * can
+      * connect -- to a -- remote Ethereum node
+      * send transactions / locally signed
 
-Clef can run as a daemon on the same machine, off a usb-stick like [USB armory](https://inversepath.com/usbarmory), or even a separate VM in a [QubesOS](https://www.qubes-os.org/) type setup.
+* ways to run
+  * daemon | SAME machine,
+  * usb-stick
+    * _Example:_ [USB armory](https://inversepath.com/usbarmory)
+  * separate VM | [QubesOS](https://www.qubes-os.org/) type setup
 
-Check out the
+## CL flags
 
-* [CLI tutorial](tutorial.md) for some concrete examples on how Clef works.
-* [Setup docs](docs/setup.md) for information on how to configure Clef on QubesOS or USB Armory.
-* [Data types](datatypes.md) for details on the communication messages between Clef and an external UI.
+* `clef --help`
 
-## Command line flags
-
-Clef accepts the following command line options:
-
-```
-COMMANDS:
-   init    Initialize the signer, generate secret storage
-   attest  Attest that a js-file is to be used
-   setpw   Store a credential for a keystore file
-   delpw   Remove a credential for a keystore file
-   gendoc  Generate documentation about json-rpc format
-   help    Shows a list of commands or help for one command
-
-GLOBAL OPTIONS:
-   --loglevel value        log level to emit to the screen (default: 4)
-   --keystore value        Directory for the keystore (default: "$HOME/.ethereum/keystore")
-   --configdir value       Directory for Clef configuration (default: "$HOME/.clef")
-   --chainid value         Chain id to use for signing (1=mainnet, 17000=Holesky) (default: 1)
-   --lightkdf              Reduce key-derivation RAM & CPU usage at some expense of KDF strength
-   --nousb                 Disables monitoring for and managing USB hardware wallets
-   --pcscdpath value       Path to the smartcard daemon (pcscd) socket file (default: "/run/pcscd/pcscd.comm")
-   --http.addr value       HTTP-RPC server listening interface (default: "localhost")
-   --http.vhosts value     Comma separated list of virtual hostnames from which to accept requests (server enforced). Accepts '*' wildcard. (default: "localhost")
-   --ipcdisable            Disable the IPC-RPC server
-   --ipcpath               Filename for IPC socket/pipe within the datadir (explicit paths escape it)
-   --http                  Enable the HTTP-RPC server
-   --http.port value       HTTP-RPC server listening port (default: 8550)
-   --signersecret value    A file containing the (encrypted) master seed to encrypt Clef data, e.g. keystore credentials and ruleset hash
-   --4bytedb-custom value  File used for writing new 4byte-identifiers submitted via API (default: "./4byte-custom.json")
-   --auditlog value        File used to emit audit logs. Set to "" to disable (default: "audit.log")
-   --rules value           Path to the rule file to auto-authorize requests with
-   --stdio-ui              Use STDIN/STDOUT as a channel for an external UI. This means that an STDIN/STDOUT is used for RPC-communication with a e.g. a graphical user interface, and can be used when Clef is started by an external process.
-   --stdio-ui-test         Mechanism to test interface between Clef and UI. Requires 'stdio-ui'.
-   --advanced              If enabled, issues warnings instead of rejections for suspicious requests. Default off
-   --suppress-bootwarn     If set, does not show the warning during boot
-   --help, -h              show help
-   --version, -v           print the version
-```
-
-Example:
-
-```
-$ clef -keystore /my/keystore -chainid 4
-```
+* _Example:_
+  * `clef --keystore $HOME/Library/Ethereum/keystore`
+    * Problems:
+      * Problem1: "No accounts found"
+        * Solution: TODO:
 
 ## Security model
 
-The security model of Clef is as follows:
+* Clef 
+  * binary / daemon
+    * == component / 
+      * -- responsible for -- handling cryptographic operations 
+        * _Example:_ sign, private keys, encryption/decryption of keystore files
+  * has 'external' API
+    * well-defined 
+    * considered -- as -- UNTRUSTED
+  * communicates -- , via stdin/stdout̉, with -- whatever process / invoked the binary 
+    * 'trusted' communication
+    * uses
+      * communicate approvals & passwords
 
-* One critical component (the Clef binary / daemon) is responsible for handling cryptographic operations: signing, private keys, encryption/decryption of keystore files.
-* Clef has a well-defined 'external' API.
-* The 'external' API is considered UNTRUSTED.
-* Clef also communicates with whatever process that invoked the binary, via stdin/stdout.
-  * This channel is considered 'trusted'. Over this channel, approvals and passwords are communicated.
+* general flow -- for -- signing a transaction
+  * `geth --signer http://localhost:8550`
+    * start Geth
+  * Geth relay requests -- to -- `eth.sendTransaction` 
+  ![image](sign_flow.png)
 
-The general flow for signing a transaction using e.g. Geth is as follows:
-![image](sign_flow.png)
-
-In this case, `geth` would be started with `--signer http://localhost:8550` and would relay requests to `eth.sendTransaction`.
 
 ## TODOs
 
@@ -121,17 +106,23 @@ The External API is **untrusted**: it does not accept credentials, nor does it e
 
 ### Internal UI API
 
-Clef has one native console-based UI, for operation without any standalone tools. However, there is also an API to communicate with an external UI. To enable that UI, the signer needs to be executed with the `--stdio-ui` option, which allocates `stdin` / `stdout` for the UI API.
+* Clef's native console-based UI
+  * allows
+    * operating WITHOUT any standalone tools
 
-An example (insecure) proof-of-concept has been implemented in `pythonsigner.py`.
-
-The model is as follows:
-
-* The user starts the UI app (`pythonsigner.py`).
-* The UI app starts `clef` with `--stdio-ui`, and listens to the
-process output for confirmation-requests.
-* `clef` opens the external HTTP API.
-* When the `signer` receives requests, it sends a JSON-RPC request via `stdout`.
+* API
+  * allows
+    * communicating -- with an -- EXTERNAL UI
+  * steps
+    * enable this UI
+      * signer needs to be executed -- with the -- `--stdio-ui` option
+      * allocates `stdin` / `stdout` -- for the -- UI API
+  * _Example:_ `pip pythonsigner.py`
+    * UNTRUSTED
+    * `clef --stdio-ui`
+      * listens -- to the -- process output
+      * `clef` opens the EXTERNAL HTTP API
+* TODO: When the `signer` receives requests, it sends a JSON-RPC request via `stdout`.
 * The UI app prompts the user accordingly, and responds to `clef`.
 * `clef` signs (or not), and responds to the original request.
 
