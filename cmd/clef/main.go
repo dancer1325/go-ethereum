@@ -472,8 +472,8 @@ func removeCredential(ctx *cli.Context) error {
 	return nil
 }
 
+// Set up the logger to print everything
 func initialize(c *cli.Context) error {
-	// Set up the logger to print everything
 	logOutput := os.Stdout
 	if c.Bool(stdiouiFlag.Name) {
 		logOutput = os.Stderr
