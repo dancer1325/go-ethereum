@@ -106,17 +106,23 @@ The External API is **untrusted**: it does not accept credentials, nor does it e
 
 ### Internal UI API
 
-Clef has one native console-based UI, for operation without any standalone tools. However, there is also an API to communicate with an external UI. To enable that UI, the signer needs to be executed with the `--stdio-ui` option, which allocates `stdin` / `stdout` for the UI API.
+* Clef's native console-based UI
+  * allows
+    * operating WITHOUT any standalone tools
 
-An example (insecure) proof-of-concept has been implemented in `pythonsigner.py`.
-
-The model is as follows:
-
-* The user starts the UI app (`pythonsigner.py`).
-* The UI app starts `clef` with `--stdio-ui`, and listens to the
-process output for confirmation-requests.
-* `clef` opens the external HTTP API.
-* When the `signer` receives requests, it sends a JSON-RPC request via `stdout`.
+* API
+  * allows
+    * communicating -- with an -- EXTERNAL UI
+  * steps
+    * enable this UI
+      * signer needs to be executed -- with the -- `--stdio-ui` option
+      * allocates `stdin` / `stdout` -- for the -- UI API
+  * _Example:_ `pip pythonsigner.py`
+    * UNTRUSTED
+    * `clef --stdio-ui`
+      * listens -- to the -- process output
+      * `clef` opens the EXTERNAL HTTP API
+* TODO: When the `signer` receives requests, it sends a JSON-RPC request via `stdout`.
 * The UI app prompts the user accordingly, and responds to `clef`.
 * `clef` signs (or not), and responds to the original request.
 
