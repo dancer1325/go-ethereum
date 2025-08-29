@@ -1,6 +1,12 @@
 ## Initializing Clef
 
-First things first, Clef needs to store some data itself. Since that data might be sensitive (passwords, signing rules, accounts), Clef's entire storage is encrypted. To support encrypting data, the first step is to initialize Clef with a random master seed, itself too encrypted with your chosen password:
+* Clef
+  * needs to store some data itself
+    * 👀's entire storage is encrypted👀
+      * Reason:🧠data might be sensitive (passwords, signing rules, accounts)🧠
+      * step
+        * `clef init`
+          * 👀initialize Clef -- with a -- random master seed / encrypted -- with -- your chosen password👀
 
 ```text
 $ clef init
@@ -37,11 +43,10 @@ You should treat 'masterseed.json' with utmost secrecy and make a backup of it!
 * The master seed does not contain your accounts, those need to be backed up separately!
 ```
 
-*For readability purposes, we'll remove the WARNING printout, user confirmation and the unlocking of the master seed in the rest of this document.*
-
 ## Remote interactions
 
-Clef is capable of managing both key-file based accounts as well as hardware wallets. To evaluate clef, we're going to point it to our Rinkeby testnet keystore and specify the Rinkeby chain ID for signing (Clef doesn't have a backing chain, so it doesn't know what network it runs on).
+Clef is capable of managing both key-file based accounts as well as hardware wallets
+* To evaluate clef, we're going to point it to our Rinkeby testnet keystore and specify the Rinkeby chain ID for signing (Clef doesn't have a backing chain, so it doesn't know what network it runs on).
 
 ```text
 $ clef --keystore ~/.ethereum/rinkeby/keystore --chainid 4
@@ -158,7 +163,8 @@ $ echo '{"id": 1, "jsonrpc": "2.0", "method": "account_list"}' | nc -U ~/.clef/c
 
 ## Under the hood
 
-While doing the operations above, these files have been created:
+* FROM above operations,
+  * create the files
 
 ```text
 $ ls -laR ~/.clef/
@@ -180,11 +186,19 @@ $ cat ~/.clef/02f90c0603f4f2f60188/config.json
 {"ruleset_sha256":{"iv":"SWWEtnl+R+I+wfG7","c":"I3fjmwmamxVcfGax7D0MdUOL29/rBWcs73WBILmYK0o1CrX7wSMc3y37KsmtlZUAjp0oItYq01Ow8VGUOzilG91tDHInB5YHNtm/YkufEbo="}}
 ```
 
-In `$HOME/.clef`, the `masterseed.json` file was created, containing the master seed. This seed was then used to derive a few other things:
-
-- **Vault location**: in this case `02f90c0603f4f2f60188`.
-   - If you use a different master seed, a different vault location will be used that does not conflict with each other (e.g. `clef --signersecret /path/to/file`). This allows you to run multiple instances of Clef, each with its own rules (e.g. mainnet + testnet).
-- **`config.json`**: the encrypted key/value storage for configuration data, currently only containing the key `ruleset_sha256`, the attested hash of the automatic rules to use.
+* | "$HOME/.clef",
+  * "masterseed.json"
+    * was created
+    * == master seed
+    * uses
+      * derive
+        - **Vault location**
+           - DIFFERENT Vault location / DIFFERENT master seed
+           - allows
+             - run MULTIPLE instances of Clef / EACH with its OWN rules
+               - _Example:_ `clef --signersecret /path/to/file`
+        - "config.json"
+          - == encrypted key/value storage -- for -- configuration data
 
 ## Advanced rules
 

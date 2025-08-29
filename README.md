@@ -3,10 +3,6 @@
 * == 👀Ethereum protocol's execution layer implementation👀
   * Golang
 
-[![API Reference](
-https://pkg.go.dev/badge/github.com/ethereum/go-ethereum
-)](https://pkg.go.dev/github.com/ethereum/go-ethereum?tab=doc)
-
 [![Discord](https://img.shields.io/badge/discord-join%20chat-blue.svg)](https://discord.gg/nthXNEv)
 
 * AUTOMATED builds

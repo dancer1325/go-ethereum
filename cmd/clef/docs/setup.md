@@ -1,41 +1,48 @@
 # Setting up Clef
 
-This document describes how Clef can be used in a more secure manner than executing it from your everyday laptop, 
-in order to ensure that the keys remain safe in the event that your computer should get compromised. 
+* goal
+  * how MORE SECURELY execute Clef
+    * != | laptop  
 
 ## Qubes OS
 
-
 ### Background 
 
-The Qubes operating system is based around virtual machines (qubes), where a set of virtual machines are configured, typically for 
-different purposes such as:
+* qubes
+  * == SEVERAL configured virtual machines /
+    * 's goals
+      - personal
+         - _Examples:_ personal email, browsing etc
+      - work
+        - _Examples:_ Work email, etc
+      - vault
+        - _Examples:_ VM WITHOUT network access | store gpg-keys and/or keepass credentials 
+    * handle externalities
+      - sys-net
+        - provides
+          - networking -- to -- ALL OTHER (network-enabled) machines
+      - sys-firewall
+        - handles firewall rules
+      - sys-usb
+        - handles USB devices
+        - can map usb-devices -- to -- certain qubes
 
-- personal
-   - Your personal email, browsing etc
-- work
-  - Work email etc
-- vault
-  - a VM without network access, where gpg-keys and/or keepass credentials are stored. 
-
-A couple of dedicated virtual machines handle externalities:
-
-- sys-net provides networking to all other (network-enabled) machines
-- sys-firewall handles firewall rules
-- sys-usb handles USB devices, and can map usb-devices to certain qubes.
-
-The goal of this document is to describe how we can set up clef to provide secure transaction
-signing from a `vault` vm, to another networked qube which runs Dapps.
+* goal
+  * how to set up clef / 
+    * sign SECURELY transaction from a `vault` vm -- to -- ANOTHER networked qube / runs Dapps
 
 ### Setup
 
-There are two ways that this can be achieved: integrated via Qubes or integrated via networking. 
-
+* ways
+  * [integrated -- via -- Qubes](#1-qubes-integrated)
+  * [integrated -- via -- networking](#2-network-integrated)
 
 #### 1. Qubes Integrated
 
-Qubes provides a facility for inter-qubes communication via `qrexec`. A qube can request to make a cross-qube RPC request 
-to another qube. The OS then asks the user if the call is permitted. 
+* TODO: Qubes provides a facility for inter-qubes communication via `qrexec`
+* A qube can request to make a cross-qube RPC request 
+to another qube
+* The OS then asks the user if the call is permitted. 
 
 ![Example](qubes/qrexec-example.png)
 
@@ -124,7 +131,7 @@ with socketserver.TCPServer(("",PORT), Dispatcher) as httpd:
 
 ```
 
-#### Testing
+##### Testing
 
 To test the flow, if we have set up `debian-work` as the `target`, we can do
  
@@ -176,23 +183,25 @@ However, it comes with a couple of drawbacks:
 
 #### 2. Network integrated
 
-The second way to set up Clef on a qubes system is to allow networking, and have Clef listen to a port which is accessible
+The second way to set up Clef on a qubes system is to allow networking
+have Clef listen to a port which is accessible
 from other qubes. 
 
 ![Clef via http](qubes/clef_qubes_http.png)
 
+## [USB armory](https://inversepath.com/usbarmory)
 
+* == hardware 
+  * open source
+  * 800 MHz ARM processor
+  * pocket-size
 
-
-## USBArmory
-
-The [USB armory](https://inversepath.com/usbarmory) is an open source hardware design with an 800 MHz ARM processor. It is a pocket-size
-computer. When inserted into a laptop, it identifies itself as a USB network interface, basically adding another network
-to your computer. Over this new network interface, you can SSH into the device. 
-
-Running Clef off a USB armory means that you can use the armory as a very versatile offline computer, which only
-ever connects to a local network between your computer and the device itself.
-
-Needless to say, while this model should be fairly secure against remote attacks, an attacker with physical access
-to the USB Armory would trivially be able to extract the contents of the device filesystem. 
-
+* uses
+  * | insert it | laptop,
+    * 👀identified itself -- as a -- USB network interface👀
+      * == add ANOTHER network | your computer /
+        * enable
+          * SSH | device 
+  * run Clef | USB armory
+    * pros
+      * secure -- against -- remote attacks
