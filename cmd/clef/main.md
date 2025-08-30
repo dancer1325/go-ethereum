@@ -5,6 +5,8 @@
     * `masterSeed`
       * `[]byte` / 's length = 256
     * get prompted passPhrase
+    * encrypt the seed
+    * write | "masterseed.json"
 
 * TODO:
 
