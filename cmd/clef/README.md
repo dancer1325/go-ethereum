@@ -56,7 +56,6 @@
   * Geth relay requests -- to -- `eth.sendTransaction` 
   ![image](sign_flow.png)
 
-
 ## TODOs
 
 Some snags and todos
@@ -911,3 +910,15 @@ There are a couple of implementation for a UI. We'll try to keep this list up to
 | GtkSigner| https://github.com/holiman/gtksigner | Python3/GTK-based| :+1:| :x:| :x:| :+1:| :+1:| :x: |  :x: |
 | Frame | https://github.com/floating/frame/commits/go-signer | Electron-based| :x:| :x:| :x:| :x:| ?| :x: |  :x: |
 | Clef UI| https://github.com/ethereum/clef-ui | Golang/QT-based| :+1:| :+1:| :x:| :+1:| :+1:| :x: |  :+1: (approve tx only)|
+
+
+## Example functions
+* define | this package
+  * Reason: 🧠OTHERWISE, it fails🧠
+### how to run?
+* `go test -v`
+
+## Tests
+### how to run?
+* | this package,
+  * `go test -v`
